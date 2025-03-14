@@ -55,7 +55,7 @@ void Chat::del(char _login[LOGINLENGTH], char _pass[], int pass_length)
 {
     int index{ -1 };
 
-    // берем пробы по всем i от 0 до размера массива
+    // ГЎГҐГ°ГҐГ¬ ГЇГ°Г®ГЎГ» ГЇГ® ГўГ±ГҐГ¬ i Г®ГІ 0 Г¤Г® Г°Г Г§Г¬ГҐГ°Г  Г¬Г Г±Г±ГЁГўГ 
     for (int i{ 0 }; i < mem_size; i++)
     {
         index = hash_func(_login, i);
@@ -73,7 +73,7 @@ void Chat::del(char _login[LOGINLENGTH], char _pass[], int pass_length)
             delete[] digest;
             if (isTrue)
             {
-                // найдена ячейка, удаляем ее            
+                // Г­Г Г©Г¤ГҐГ­Г  ГїГ·ГҐГ©ГЄГ , ГіГ¤Г Г«ГїГҐГ¬ ГҐГҐ            
                 data[index].status = enPairStatus::deleted;
                 data_count--;
                 return;
@@ -110,25 +110,25 @@ bool Chat::find(char _login[LOGINLENGTH])
 {
     int index{ -1 };
     
-    // берем пробы по всем i от 0 до размера массива
+    // ГЎГҐГ°ГҐГ¬ ГЇГ°Г®ГЎГ» ГЇГ® ГўГ±ГҐГ¬ i Г®ГІ 0 Г¤Г® Г°Г Г§Г¬ГҐГ°Г  Г¬Г Г±Г±ГЁГўГ 
     for (int i{ 0 }; i < mem_size; i++)
     {
         index = hash_func(_login, i);
         if (data[index].status == enPairStatus::free)
         {
-            // найдена пустая ячейка
+            // Г­Г Г©Г¤ГҐГ­Г  ГЇГіГ±ГІГ Гї ГїГ·ГҐГ©ГЄГ 
             return false;
         }
 
         if (data[index].status == enPairStatus::deleted)
         {
-            // найдена удаленная ячейка
+            // Г­Г Г©Г¤ГҐГ­Г  ГіГ¤Г Г«ГҐГ­Г­Г Гї ГїГ·ГҐГ©ГЄГ 
             continue;
         }
 
         if (!memcmp(data[index].login, _login, LOGINLENGTH))
         {
-            // найдена ячейка
+            // Г­Г Г©Г¤ГҐГ­Г  ГїГ·ГҐГ©ГЄГ 
             return true;
         }
     }
@@ -140,14 +140,14 @@ void Chat::add(char _login[LOGINLENGTH], uint* pass_sha1_hash)
 {
     int index{ -1 };
     int i{ 0 };
-    // берем пробы по всем i от 0 до размера массива
+    // ГЎГҐГ°ГҐГ¬ ГЇГ°Г®ГЎГ» ГЇГ® ГўГ±ГҐГ¬ i Г®ГІ 0 Г¤Г® Г°Г Г§Г¬ГҐГ°Г  Г¬Г Г±Г±ГЁГўГ 
     for (; i < mem_size; i++)
     {
         index = hash_func(_login, i);
 
         if (data[index].status == enPairStatus::free || data[index].status == enPairStatus::deleted)
         {
-            // найдена пустая или удаленная ячейка, занимаем ее
+            // Г­Г Г©Г¤ГҐГ­Г  ГЇГіГ±ГІГ Гї ГЁГ«ГЁ ГіГ¤Г Г«ГҐГ­Г­Г Гї ГїГ·ГҐГ©ГЄГ , Г§Г Г­ГЁГ¬Г ГҐГ¬ ГҐГҐ
             data[index] = AuthData(_login, pass_sha1_hash);
             data[index].status = enPairStatus::engaged;
             data_count++;
@@ -157,21 +157,21 @@ void Chat::add(char _login[LOGINLENGTH], uint* pass_sha1_hash)
 
     if (i >= mem_size)
     {
-        // увеличение размера массива
+        // ГіГўГҐГ«ГЁГ·ГҐГ­ГЁГҐ Г°Г Г§Г¬ГҐГ°Г  Г¬Г Г±Г±ГЁГўГ 
         resize();
-        // пересчет хеша
+        // ГЇГҐГ°ГҐГ±Г·ГҐГІ ГµГҐГёГ 
         add(_login, pass_sha1_hash);
     }
 }
 
 void Chat::resize()
 {
-    AuthData* save_old_data = data; // запоминаем старый массив
+    AuthData* save_old_data = data; // Г§Г ГЇГ®Г¬ГЁГ­Г ГҐГ¬ Г±ГІГ Г°Г»Г© Г¬Г Г±Г±ГЁГў
     int oldSize = mem_size;
 
-    mem_size *= 2;  // увеличиваем размер в два раза  
-    data_count = 0; // обнуляем количество элементов
-    data = new AuthData[mem_size]; // выделяем новую память
+    mem_size *= 2;  // ГіГўГҐГ«ГЁГ·ГЁГўГ ГҐГ¬ Г°Г Г§Г¬ГҐГ° Гў Г¤ГўГ  Г°Г Г§Г   
+    data_count = 0; // Г®ГЎГ­ГіГ«ГїГҐГ¬ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў
+    data = new AuthData[mem_size]; // ГўГ»Г¤ГҐГ«ГїГҐГ¬ Г­Г®ГўГіГѕ ГЇГ Г¬ГїГІГј
 
     for (int i = 0; i < oldSize; i++) {
         if (save_old_data[i].status == enPairStatus::engaged)
@@ -183,15 +183,15 @@ void Chat::resize()
 
 int Chat::hash_func(char _login[LOGINLENGTH], int offset)
 {
-    // вычисляем индекс
+    // ГўГ»Г·ГЁГ±Г«ГїГҐГ¬ ГЁГ­Г¤ГҐГЄГ±
     int sum{ 0 };
-    double A{ 0.7 };
+    const double A{ 0.7 };
 
     for (int i{ 0 }; i < strlen(_login); i++)
     {
         sum += _login[i];
     }
     int hashLogin{ static_cast<int>(mem_size * (A * sum - static_cast<int>(A * sum))) };
-    // квадратичные пробы
+    // ГЄГўГ Г¤Г°Г ГІГЁГ·Г­Г»ГҐ ГЇГ°Г®ГЎГ»
     return (hashLogin % mem_size + offset * offset) % mem_size;
 }
